@@ -20,9 +20,9 @@ void scan()
 
 	foreach(DirEntry e; parallel(dirEntries(".", "*.lst", SpanMode.breadth)))
 	{
-		auto name = e.name.baseName;
+		auto fileName = e.name.baseName;
 
-		if(e.isFile && !name.startsWith("."))
+		if(e.isFile && !fileName.startsWith("."))
 		{
 			immutable string text = readText(e.name).ifThrown!UTFException("");
 			auto lines = text.lineSplitter();
@@ -33,7 +33,7 @@ void scan()
 			{
 				size_t percent = to!size_t(re["percent"]);
 
-				writeln(name, " => ", percent, "%");
+				writeln(fileName, " => ", percent, "%");
 				++count;
 				coveragePercentTotal += percent;
 			}
@@ -57,7 +57,7 @@ void createCoverageFiles()
 
 	writeln("Generating coverage files. This may take some time depending upon project size.");
 	writeln;
-	
+
 	scope(exit) wait(pipes.pid);
 }
 
