@@ -9,7 +9,9 @@ import std.utf : UTFException;
 import std.exception : ifThrown;
 import std.range : retro;
 import std.regex : Regex, regex, matchFirst;
-import std.process : pipeProcess, wait;
+import std.process : pipeProcess, wait, tryWait;
+
+import raijin.utils.process;
 
 Regex!char _Pattern = regex(r"is\s+(?P<percent>\d+)%\s+covered");
 
@@ -53,12 +55,8 @@ void scan()
 
 void createCoverageFiles()
 {
-	auto pipes = pipeProcess(["dub", "test", "-b", "unittest-cov"]);
-
-	writeln("Generating coverage files. This may take some time depending upon project size.");
-	writeln;
-
-	scope(exit) wait(pipes.pid);
+	ProcessWait process;
+	process.execute("dub", "test", "-b", "unittest-cov");
 }
 
 void main()
