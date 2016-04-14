@@ -1,7 +1,7 @@
 import std.file;
 import std.stdio : writeln;
 import std.parallelism : parallel;
-import std.string : startsWith, lineSplitter;
+import std.string : startsWith, lineSplitter, endsWith;
 import std.array : array;
 import std.path : baseName;
 import std.conv : to;
@@ -10,17 +10,35 @@ import std.exception : ifThrown;
 import std.range : retro;
 import std.regex : Regex, regex, matchFirst;
 import std.process : pipeProcess, wait, tryWait;
+import std.algorithm : filter;
 
 import raijin.utils.process;
 
 Regex!char _Pattern = regex(r"is\s+(?P<percent>\d+)%\s+covered");
 
+auto getListOfCoverageFiles()
+{
+	return dirEntries("", SpanMode.depth).filter!(f => f.name.endsWith(".lst"));
+}
+
+/// Dub creates lots of hidden .lst files for dependencies and fails to remove them. So we do it here.
+void removeCoverageFiles()
+{
+	auto fileList = getListOfCoverageFiles();
+
+	foreach(e; parallel(fileList, 1))
+	{
+		remove(e.name);
+	}
+}
+
 void scan()
 {
 	size_t count;
 	size_t coveragePercentTotal;
+	auto fileList = getListOfCoverageFiles();
 
-	foreach(DirEntry e; parallel(dirEntries(".", "*.lst", SpanMode.breadth)))
+	foreach(e; parallel(fileList, 1))
 	{
 		auto fileName = e.name.baseName;
 
@@ -61,6 +79,7 @@ void createCoverageFiles()
 
 void main()
 {
+	removeCoverageFiles();
 	createCoverageFiles();
 	scan();
 }
