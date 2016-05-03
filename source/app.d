@@ -77,9 +77,19 @@ void createCoverageFiles()
 	process.execute("dub", "test", "-b", "unittest-cov");
 }
 
-void main()
+void main(string[] args)
 {
-	removeCoverageFiles();
-	createCoverageFiles();
-	scan();
+	const string[] commands = args[1..$];
+
+	if(commands.length == 1 && commands[0] == "--cleanup")
+	{
+		writeln("Removing previously generated coverage files only.");
+		removeCoverageFiles();
+	}
+	else
+	{
+		removeCoverageFiles();
+		createCoverageFiles();
+		scan();
+	}
 }
