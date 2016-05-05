@@ -74,7 +74,7 @@ void scan()
 void createCoverageFiles()
 {
 	ProcessWait process;
-	process.execute("dub", "test", "-b", "unittest-cov");
+	process.execute("dub", "test", "-b", "unittest-cov", "--skip-registry=standard");
 }
 
 void main(string[] args)
