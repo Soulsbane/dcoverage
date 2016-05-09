@@ -71,9 +71,9 @@ void scan()
 	}
 }
 
-void createCoverageFiles()
+auto createCoverageFiles()
 {
-	waitForApplication("dub", "test", "-b", "unittest-cov", "--skip-registry=standard");
+	return waitForApplication("dub", "test", "-b", "unittest-cov", "--skip-registry=standard");
 }
 
 void main(string[] args)
@@ -88,7 +88,11 @@ void main(string[] args)
 	else
 	{
 		removeCoverageFiles();
-		createCoverageFiles();
-		scan();
+		auto exitStatus = createCoverageFiles();
+
+		if(exitStatus == 0)
+		{
+			scan();
+		}
 	}
 }
