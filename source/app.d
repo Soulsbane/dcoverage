@@ -53,21 +53,36 @@ void scan()
 			{
 				size_t percent = to!size_t(re["percent"]);
 
-				writeln(fileName, " => ", percent, "%");
+				if(percent == 0)
+				{
+					writeln(fileName, " No Coverage!");
+				}
+				else
+				{
+					writeln(fileName, " => ", percent, "%");
+				}
+
 				++count;
 				coveragePercentTotal += percent;
 			}
 		}
 	}
 
-	if(count != 0)
+	if(count == 0 && coveragePercentTotal == 0)
 	{
-		writeln;
-		writeln("Coverage over ", count, " files: ", coveragePercentTotal / count, "%");
+		if(coveragePercentTotal == 0)
+		{
+			writeln("Coverage over ", count, " files");
+		}
+		else
+		{
+			writeln("No coverage files found!");
+		}
 	}
 	else
 	{
-		writeln("No coverage files found!");
+		writeln;
+		writeln("Coverage over ", count, " files: ", coveragePercentTotal / count, "%");
 	}
 }
 
@@ -93,6 +108,10 @@ void main(string[] args)
 		if(exitStatus == 0)
 		{
 			scan();
+		}
+		else
+		{
+			writeln("Failed to create coverage files!");
 		}
 	}
 }
