@@ -51,7 +51,7 @@ void scan()
 
 			if(!re.empty)
 			{
-				size_t percent = to!size_t(re["percent"]);
+				immutable size_t percent = to!size_t(re["percent"]);
 
 				if(percent == 0)
 				{
