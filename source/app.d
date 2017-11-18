@@ -12,7 +12,7 @@ import std.regex : Regex, regex, matchFirst;
 import std.process : pipeProcess, wait, tryWait;
 import std.algorithm : filter;
 
-import raijin.utils.process;
+import processwait.wait;
 
 Regex!char _Pattern = regex(r"is\s+(?P<percent>\d+)%\s+covered");
 
@@ -32,6 +32,7 @@ void removeCoverageFiles()
 	}
 }
 
+// FIXME: Ignore files that dub creates in the format of -tmp-dub_test_root-c4be77be-a1a1-4af2-b08d-faf29dff42bf.lst
 void scan()
 {
 	size_t count;
