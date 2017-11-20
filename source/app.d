@@ -89,7 +89,7 @@ void scan()
 
 auto createCoverageFiles()
 {
-	return waitForApplication(0, "dub", "test", "-b", "unittest-cov", "--skip-registry=standard");
+	return waitForApplication("dub", "test", "-b", "unittest-cov", "--skip-registry=standard");
 }
 
 void main(string[] args)
