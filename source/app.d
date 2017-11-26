@@ -12,6 +12,7 @@ import std.regex : Regex, regex, matchFirst;
 import std.process : pipeProcess, wait, tryWait;
 import std.algorithm : filter;
 
+import colored;
 import processwait.wait;
 
 Regex!char _Pattern = regex(r"is\s+(?P<percent>\d+)%\s+covered");
@@ -56,11 +57,11 @@ void scan()
 
 				if(percent == 0)
 				{
-					writeln(fileName, " No Coverage!");
+					writeln(fileName, " No Coverage!".red);
 				}
 				else
 				{
-					writeln(fileName, " => ", percent, "%");
+					writeln(fileName, " => ", percent.to!string.yellow, "%".yellow);
 				}
 
 				++count;
