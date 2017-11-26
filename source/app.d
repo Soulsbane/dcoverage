@@ -18,7 +18,7 @@ Regex!char _Pattern = regex(r"is\s+(?P<percent>\d+)%\s+covered");
 
 auto getListOfCoverageFiles()
 {
-	return dirEntries("", SpanMode.depth).filter!(f => f.name.endsWith(".lst"));
+	return dirEntries("", SpanMode.depth).filter!(f => f.name.endsWith(".lst") && !f.name.startsWith("-tmp-dub_test"));
 }
 
 /// Dub creates lots of hidden .lst files for dependencies and fails to remove them. So we do it here.
