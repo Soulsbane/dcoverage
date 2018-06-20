@@ -79,8 +79,16 @@ void scan()
 	}
 	else
 	{
-		writeln;
-		writeln("Coverage over ", count, " files: ", coveragePercentTotal / count, "%");
+		if(count == 1)
+		{
+			writeln;
+			writeln("Coverage over ", count, " file: ", coveragePercentTotal / count, "%");
+		}
+		else
+		{
+			writeln;
+			writeln("Coverage over ", count, " files: ", coveragePercentTotal / count, "%");
+		}
 	}
 }
 
