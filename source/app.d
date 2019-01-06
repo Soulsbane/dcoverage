@@ -10,7 +10,7 @@ import std.exception : ifThrown;
 import std.range : retro;
 import std.regex : Regex, regex, matchFirst;
 import std.process : pipeProcess, wait, tryWait;
-import std.algorithm : filter;
+import std.algorithm : filter, each;
 
 import colored;
 import processwait.wait;
@@ -20,12 +20,7 @@ Regex!char _Pattern = regex(r"is\s+(?P<percent>\d+)%\s+covered");
 /// Dub creates lots of hidden .lst files for dependencies and fails to remove them. So we do it here.
 void removeCoverageFiles()
 {
-	auto fileList = dirEntries("", SpanMode.depth).filter!(f => f.name.endsWith(".lst"));
-
-	foreach(e; parallel(fileList, 1))
-	{
-		remove(e.name);
-	}
+	dirEntries("", SpanMode.depth).filter!(f => f.name.endsWith(".lst")).each!(e => e.name.remove);
 }
 
 // FIXME: Ignore files that dub creates in the format of -tmp-dub_test_root-c4be77be-a1a1-4af2-b08d-faf29dff42bf.lst
