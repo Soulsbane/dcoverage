@@ -29,7 +29,7 @@ void scan()
 	size_t count;
 	size_t coveragePercentTotal;
 	auto fileList = dirEntries("", SpanMode.depth)
-		.filter!(f => f.name.endsWith(".lst") && !f.name.startsWith("-tmp-dub_test"));
+		.filter!(f => f.name.endsWith(".lst") && f.name.startsWith("source-"));
 
 	foreach(e; parallel(fileList, 1))
 	{
